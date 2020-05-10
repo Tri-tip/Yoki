@@ -5,14 +5,13 @@ module.exports.load_commands = (client) => {
     readDirectoryRecursive(client, 'commands')
 }
 
-let ignoreFiles = ['BaseEmbed.js', 'BaseCommand.js', 'BaseFun.js']
 
 let readDirectoryRecursive = (client, source, path = "\commands") => {
     //read the directory
     fs.readdirSync(process.cwd() + "\\" + source, {
             withFileTypes: true
         })
-        .filter(e => !(ignoreFiles.includes(e.name)))
+        .filter(e => !(e.name.startsWith("Base")))
         .forEach(file => {
             //for every item inside this directory, check if it is a directory, if it is, call this function again till it hits an actual file
             if (file.isDirectory()) {
