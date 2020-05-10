@@ -26,6 +26,7 @@
   "homepage": "https://github.com/zaida04/Yoki#readme",
   "dependencies": {
     "ascii-table": "0.0.9",
+    "cfonts": "^2.8.2",
     "colors": "^1.4.0",
     "discord.js": "12.2.0",
     "dotenv": "^8.2.0",

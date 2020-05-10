@@ -1,4 +1,5 @@
 module.exports.message = async (message, mongodb) => {
+    let prefix = "e!"
     //check to see if the message author is a bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
@@ -9,38 +10,37 @@ module.exports.message = async (message, mongodb) => {
     const commandName = args.shift().toLowerCase();
 
     //retrieve the command (by name) from the collection that is populated with the commands on startup
-    const command = client.commands.bot_commands.get(commandName) || client.commands.bot_commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-    
+    const command = message.client.commands.bot_commands.get(commandName) || message.client.commands.bot_commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     //if the command is not in the collection, do not continue
+
     if (!command) return;
 
     //if the command has the property guildOnly as true, and the message isn't in a guild, do not continue
     if (command.guildOnly && message.channel.type !== 'text') {
         return message.reply('Sorry, but you can\'t execute that command inside DMs!');
     }
-
     //if the command *has* a required permissions array, and the executor does not have these said permissions, do not continue
     if (command.permissions && !message.guild.member(message.author).hasPermission(command.permissions, false, true, true)) {
         return message.reply("Sorry, but you do not have the permissions: " + command.permissions + ". ")
     }
 
     //if the command has the property args as true, and the amount of args are not equal to the required args length AND the required length isn't set to -1 (unlimited args, usually the command will have a regex that takes quote args)
-    if (command.args && (command.args.required_length !== -1 && !args.length == command.args.required_length)) {
-        let reply = `Sorry, you didn't provide any arguments!`;
+    if (command.args && (command.args.required_length !== -1 && args.length !== command.args.required_length)) {
+        let reply = `Sorry, either you didn't provide any arguments or you provided too many!`;
         if (message.channel.type == 'text') {
-            message.react(":x");
+            await message.react("709155919963095040");
         }
+        console.log(command)
         if (command.usage) {
             reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
         }
         return message.reply(reply);
     }
-
     //execute the command
     try {
         //wrap it in an async because most of the commands should return a promise that we would like to await.
-        (async () => await command.execute(message, args, mongodb));
+        await command.execute(message, args, mongodb);
     } catch (e) {
-        message.channel.send(`An internal exception has occured. This should not happen, and we'd like to ask you to join our support server that you can access using \`?support\` and to copy paste the error below into https://pastebin.com/ and share it with us. \n\n The error to copy paste: \`\`\` ${e}\`\`\``)
+        message.channel.send(`An internal exception has occured. This should not happen, and we'd like to ask you to join our support server that you can access using \`?support\` and to copy paste the error below and the command code into https://pastebin.com/ and share it with us. \n\n The error to copy paste: \`\`\` ${e} Command Code: ${command.id}\`\`\``)
     }
 }
