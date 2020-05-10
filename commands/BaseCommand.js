@@ -1,6 +1,6 @@
 class BaseCommand {
     constructor(obj) {
-        let { id, name, description, aliases = [], usage = "", cooldown = 1, guildOnly, permissions = [], args } = obj;
+        let { id, name, description, aliases = [], usage = "", cooldown = 1, guildOnly, permissions = [], args, mentions } = obj;
         this._id = id;
         this._name = name;
         this._description = description;
@@ -10,12 +10,16 @@ class BaseCommand {
         this._guildOnly = guildOnly;
         this._permissions = permissions;
         this._args = args
+        this._mentions = mentions
     }
     get id() {
         return this._id
     }
     get args() {
         return this._args
+    }
+    get mentions() { 
+        return this._mentions
     }
     get guildOnly() {
         return this._guildOnly;

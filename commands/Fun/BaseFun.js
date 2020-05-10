@@ -9,7 +9,8 @@ class BaseFun extends BaseCommand {
             aliases = [],
             guildOnly = true,
             args_length = 1,
-            usage
+            usage,
+            mentions
         } = obj
         super({
             "id": id,
@@ -21,6 +22,9 @@ class BaseFun extends BaseCommand {
             "guildOnly": guildOnly,
             "args": {
                 required_length: args_length
+            },
+            "mentions": {
+                required_mentions: mentions
             }
         });
         this.url = url

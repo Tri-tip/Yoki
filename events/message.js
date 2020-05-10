@@ -24,13 +24,24 @@ module.exports.message = async (message, mongodb) => {
         return message.reply("Sorry, but you do not have the permissions: " + command.permissions + ". ")
     }
 
+    if (command.mentions) {
+        if ((command.mentions.required_mentions !== -1 && message.mentions.users.size !== command.mentions.required_mentions) || (message.mentions.users.size < 1)) {
+            if (message.mentions.users.size > 5) return message.reply("Too many mentions!");
+            let reply = "You gotta mention people for this command to work!"
+            if (command.usage) {
+                reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+            }
+            return message.reply(reply)
+        } 
+        if(message.mentions.users.size > 5)
+            return message.reply("Too many mentions!")
+    }
     //if the command has the property args as true, and the amount of args are not equal to the required args length AND the required length isn't set to -1 (unlimited args, usually the command will have a regex that takes quote args)
-    if (command.args && (command.args.required_length !== -1 && args.length !== command.args.required_length)) {
+    if (command.args && ((command.args.required_length !== -1 && args.length !== command.args.required_length) || args.length < 1)) {
         let reply = `Sorry, either you didn't provide any arguments or you provided too many!`;
         if (message.channel.type == 'text') {
             await message.react("709155919963095040");
         }
-        console.log(command)
         if (command.usage) {
             reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
         }
@@ -41,6 +52,6 @@ module.exports.message = async (message, mongodb) => {
         //wrap it in an async because most of the commands should return a promise that we would like to await.
         await command.execute(message, args, mongodb);
     } catch (e) {
-        message.channel.send(`An internal exception has occured. This should not happen, and we'd like to ask you to join our support server that you can access using \`?support\` and to copy paste the error below and the command code into https://pastebin.com/ and share it with us. \n\n The error to copy paste: \`\`\` ${e} Command Code: ${command.id}\`\`\``)
+        message.channel.send(`An internal exception has occured. This should not happen, and we'd like to ask you to join our support server that you can access using \`?support\` and to copy paste the error below and the command code into https://pastebin.com/ and share it with us. \n\n The error to copy paste: \`\`\` ${e} \`\`\`\n **Please Include this: Command Code: ${command.id}**`)
     }
 }
