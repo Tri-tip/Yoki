@@ -16,6 +16,7 @@ class BaseFun extends BaseCommand {
         super({
             "id": id,
             "name": name,
+            "category": "Fun",
             "description": "Sends a fun gif/image",
             "aliases": aliases,
             "usage": usage,

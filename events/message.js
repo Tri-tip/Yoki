@@ -1,5 +1,8 @@
+let Guild = require('../internals/Guild.js');
+
 module.exports.message = async (message, mongodb) => {
-    let prefix = "e!"
+    let fetch_guild = await Guild.findOne({"guildID": message.guild.id})
+    if(!fetch_guild) prefix = "y!"; else prefix = fetch_guild.prefix
     //check to see if the message author is a bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 

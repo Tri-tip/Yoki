@@ -10,10 +10,12 @@ class BaseCommand {
             guildOnly,
             permissions = [],
             args,
-            mentions
+            mentions,
+            category
         } = obj;
         this._id = id;
         this._name = name;
+        this._category = category
         this._description = description;
         this._usage = usage;
         this._cooldown = cooldown;
@@ -25,6 +27,9 @@ class BaseCommand {
     }
     get id() {
         return this._id
+    }
+    get category() {
+        return this._category
     }
     get args() {
         return this._args

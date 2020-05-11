@@ -30,7 +30,7 @@ client.commands = {
 
 //events
 const events = require('./events/events.js');
-const internals = require('./internal_functions/internals.js')
+const internals = require('./internals/internals.js')
 
 //Ensure the database is connected
 mongoose.connection.on('open', () => {
@@ -55,6 +55,7 @@ mongoose.connection.on('open', () => {
         internals.LOAD_COMMANDS(client);
         events.READY(client);
     });
+    client.on('guildCreate', async(message) => await events.GUILDCREATE(message))
     client.on('message', async (message) => await events.MESSAGE(message));
 });
 
