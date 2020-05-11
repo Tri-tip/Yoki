@@ -20,3 +20,6 @@ MONGO_URL=MONGOCONNECTURI
 ```
 ## Get Support
 We have a discord server [here](https://discord.gg/fPRrVfx)
+
+## Use
+You are free to use it for any purpose you see fit, non-commercial
