@@ -17,6 +17,7 @@ npm start
 ```
 BOT_TOKEN=TOKENFROMDISCORD
 MONGO_URL=MONGOCONNECTURI
+TENOR_TOKEN=TOKENFROMTENORAPI
 ```
 ## Get Support
 We have a discord server [here](https://discord.gg/fPRrVfx)
