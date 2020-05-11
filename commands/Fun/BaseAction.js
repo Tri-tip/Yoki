@@ -2,11 +2,13 @@ const BaseFun = require('./BaseFun');
 
 class BaseAction extends BaseFun {
     constructor(obj) {
-        let { id, name, url } = obj
+        let {
+            id,
+            name,
+        } = obj
         super({
             "id": id,
             "name": name,
-            "url": url,
             "args_length": -1,
             "usage": "@target",
             "mentions": -1
@@ -14,14 +16,14 @@ class BaseAction extends BaseFun {
     }
     async execute(message) {
         let list = [];
-        if(message.mentions.users.size > 0) {
+        if (message.mentions.users.size > 0) {
             message.mentions.users.forEach(e => {
                 list.push(e.tag)
             })
             list = list.join(" and ")
-            if(message.mentions.users.size === 1)
+            if (message.mentions.users.size === 1)
                 list += " has"
-            else 
+            else
                 list += " have"
         }
         let ac = this.name.slice(-1)

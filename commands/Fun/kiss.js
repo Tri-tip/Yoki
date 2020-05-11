@@ -1,11 +1,11 @@
 const BaseAction = require('./BaseAction');
 
 
-module.exports = class hug extends BaseAction {
+module.exports = class kiss extends BaseAction {
     constructor() {
         super({
             "id": 1,
-            "name": "hug",
+            "name": "kiss",
         })
         super.initialize()
     }

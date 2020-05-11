@@ -32,8 +32,8 @@ module.exports.message = async (message, mongodb) => {
                 reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
             }
             return message.reply(reply)
-        } 
-        if(message.mentions.users.size > 5)
+        }
+        if (message.mentions.users.size > 5)
             return message.reply("Too many mentions!")
     }
     //if the command has the property args as true, and the amount of args are not equal to the required args length AND the required length isn't set to -1 (unlimited args, usually the command will have a regex that takes quote args)

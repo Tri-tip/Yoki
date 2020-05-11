@@ -1,4 +1,6 @@
-const { load_commands } = require('./load_commands.js');
+const {
+    load_commands
+} = require('./loadCommands.js');
 
 module.exports = {
     "LOAD_COMMANDS": load_commands

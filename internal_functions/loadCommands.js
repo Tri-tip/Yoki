@@ -18,8 +18,8 @@ let readDirectoryRecursive = (client, source, path = "\commands") => {
                 path += '\\' + file.name
                 readDirectoryRecursive(client, path, path);
             } else {
-            //if not a directory, load it into commands
-                let tempreq = require('../' + path + "\\" + file.name); 
+                //if not a directory, load it into commands
+                let tempreq = require('../' + path + "\\" + file.name);
                 return client.commands.bot_commands.set(tempreq.name.toLowerCase(), new tempreq());
             }
             //once it is done with one directory, reset the path and move on to the next directory
@@ -29,4 +29,4 @@ let readDirectoryRecursive = (client, source, path = "\commands") => {
 
 function isClass(v) {
     return typeof v === 'function' && /^\s*class\s+/.test(v.toString());
-  }
+}
