@@ -1,8 +1,13 @@
 let Guild = require('../internals/Guild.js');
 
 module.exports.message = async (message, mongodb) => {
-    let fetch_guild = await Guild.findOne({"guildID": message.guild.id})
-    if(!fetch_guild) prefix = "y!"; else prefix = fetch_guild.prefix
+    let prefix;
+    message.guild ? await Guild.findOne({
+        "guildID": message.guild.id
+    }) ? prefix = (await Guild.findOne({
+        "guildID": message.guild.id
+    })).prefix : prefix = "y!" : prefix = "y!"
+    console.log(prefix)
     //check to see if the message author is a bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     let lis_chec = message.client.messagelistener.get(message.author.id);
@@ -19,16 +24,16 @@ module.exports.message = async (message, mongodb) => {
     //if the command is not in the collection, do not continue
 
     if (!command) return;
-
-    //if the command has the property guildOnly as true, and the message isn't in a guild, do not continue
-    if (command.guildOnly && message.channel.type !== 'text') {
-        return message.reply('Sorry, but you can\'t execute that command inside DMs!');
+    if (message.guild) {
+        //if the command has the property guildOnly as true, and the message isn't in a guild, do not continue
+        if (command.guildOnly && message.channel.type !== 'text') {
+            return message.reply('Sorry, but you can\'t execute that command inside DMs!');
+        }
+        //if the command *has* a required permissions array, and the executor does not have these said permissions, do not continue
+        if (command.permissions && !message.guild.member(message.author).hasPermission(command.permissions, false, true, true)) {
+            return message.reply("Sorry, but you do not have the permissions: " + command.permissions + ". ")
+        }
     }
-    //if the command *has* a required permissions array, and the executor does not have these said permissions, do not continue
-    if (command.permissions && !message.guild.member(message.author).hasPermission(command.permissions, false, true, true)) {
-        return message.reply("Sorry, but you do not have the permissions: " + command.permissions + ". ")
-    }
-
     if (command.mentions) {
         if ((command.mentions.required_mentions !== -1 && message.mentions.users.size !== command.mentions.required_mentions) || (message.mentions.users.size < 1)) {
             if (message.mentions.users.size > 5) return message.reply("Too many mentions!");
@@ -57,6 +62,6 @@ module.exports.message = async (message, mongodb) => {
         //wrap it in an async because most of the commands should return a promise that we would like to await.
         await command.execute(message, args, mongodb);
     } catch (e) {
-        message.channel.send(`An internal exception has occured. This should not happen, and we'd like to ask you to join our support server that you can access using \`?support\` and to copy paste the error below and the command code into https://pastebin.com/ and share it with us. \n\n The error to copy paste: \`\`\` ${e} \`\`\`\n **Please Include this: Command Code: ${command.id}**`)
+        message.channel.send(`An internal exception has occured. This should not happen, and we'd like to ask you to join our support server that you can access using \`?support\` and to copy paste the error below and the command code into https://pastebin.com/ and share it with us. \n\n The error to copy paste: \`\`\` ${e}\n${e.stack.substring(0, 200)} \`\`\`\n **Please Include this: Command Code: ${command.id}**`)
     }
 }

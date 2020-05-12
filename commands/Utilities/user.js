@@ -4,7 +4,7 @@ const BaseEmbed = require('../BaseEmbed.js');
 module.exports = class user extends BaseCommand {
     constructor() {
         super({
-            id: 13,
+            id: 15,
             name: "user",
             description: "Get the info on this user",
             aliases: ["user-info", 'member', 'userinfo'],

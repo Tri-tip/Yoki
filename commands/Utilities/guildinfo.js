@@ -4,7 +4,7 @@ const BaseEmbed = require("../BaseEmbed.js");
 module.exports = class guildinfo extends BaseCommand {
     constructor() {
         super({
-            id: 12,
+            id: 13,
             name: "guildinfo",
             description: "Get the info on this Guild",
             aliases: ["info", 'guild', 'guild-info'],
