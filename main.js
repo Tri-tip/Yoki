@@ -26,6 +26,7 @@ client.commands = {
     "table": new AsciiTable('Yoki Bot'),
     "bot_commands": new Discord.Collection()
 }
+client.messagelistener = new Discord.Collection();
 
 //events
 const events = require('./events/events.js');
@@ -56,6 +57,7 @@ mongoose.connection.on('open', () => {
     });
     client.on('guildCreate', async(message) => await events.GUILDCREATE(message))
     client.on('message', async (message) => await events.MESSAGE(message));
+    client.on('guildMemberAdd', async(member) => await events.GUILDMEMBERADD(member))
 });
 
 mongoose.connection.on('error', () => console.log("Unfortunately, a connection to the mongo database was unsuccessful. Please contact mongo support for help with this or go to their knowledge base.".underline.red))

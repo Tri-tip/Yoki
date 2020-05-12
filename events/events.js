@@ -3,13 +3,17 @@ const {
 } = require('./ready.js');
 const {
     message
-} = require('./message.js')
+} = require('./message.js');
 const {
     guildCreate
-} = require('./guildCreate.js')
+} = require('./guildCreate.js');
+const {
+    guildMemberAdd
+} = require('./guildMemberAdd.js')
 
 module.exports = {
     "READY": ready,
     "GUILDCREATE": guildCreate,
-    "MESSAGE": message
+    "MESSAGE": message,
+    "GUILDMEMBERADD": guildMemberAdd
 }

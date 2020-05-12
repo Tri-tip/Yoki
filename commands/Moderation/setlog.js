@@ -1,16 +1,17 @@
 const BaseCommand = require('../BaseCommand');
-const { checkguildsetup } = require('../../internals/checkguildsetup.js');
+const {
+    checkguildsetup
+} = require('../../internals/checkguildsetup.js');
 const Guild = require('../../internals/Guild.js');
 
-module.exports = class setprefix extends BaseCommand {
+module.exports = class setlog extends BaseCommand {
     constructor() {
         super({
-            "id": 6,
-            "name": "setprefix",
+            "id": 5,
+            "name": "setlog",
             "category": "Moderation",
-            "description": "set the prefix for this guild",
-            "aliases": ['setp', 'configprefix'],
-            "usage": "<newprefix>",
+            "description": "set the Log Channel for this guild",
+            "usage": "<newchannel>",
             "cooldown": 20,
             "guildOnly": true,
             "permisisons": ["MANAGE_SERVER"],
@@ -22,11 +23,12 @@ module.exports = class setprefix extends BaseCommand {
     async execute(message, args) {
         let fetch_guild = await checkguildsetup(message.guild.id, message.channel);
         if (!fetch_guild) return message.reply("Sorry, but this server has not been setup yet.")
+
         try {
             await Guild.findOneAndUpdate({
                 "guildID": message.guild.id
             }, {
-                "prefix": args[0]
+                "mod_log": message.mentions.channels.first().id
             });
             message.reply("The guild prefix has been set to " + args[0])
         } catch (e) {

@@ -1,16 +1,17 @@
+const {
+    checkguildsetup
+} = require('../../internals/checkguildsetup.js');
 const BaseCommand = require('../BaseCommand');
-const { checkguildsetup } = require('../../internals/checkguildsetup.js');
 const Guild = require('../../internals/Guild.js');
 
-module.exports = class setprefix extends BaseCommand {
+module.exports = class setwelcome extends BaseCommand {
     constructor() {
         super({
-            "id": 6,
-            "name": "setprefix",
+            "id": 7,
+            "name": "setwelcome",
             "category": "Moderation",
-            "description": "set the prefix for this guild",
-            "aliases": ['setp', 'configprefix'],
-            "usage": "<newprefix>",
+            "description": "set the Welcome Channel for this guild",
+            "usage": "<newchannel>",
             "cooldown": 20,
             "guildOnly": true,
             "permisisons": ["MANAGE_SERVER"],
@@ -26,9 +27,9 @@ module.exports = class setprefix extends BaseCommand {
             await Guild.findOneAndUpdate({
                 "guildID": message.guild.id
             }, {
-                "prefix": args[0]
+                "welcome_channel.id": message.mentions.channels.first().id
             });
-            message.reply("The guild prefix has been set to " + args[0])
+            message.reply("The welcome channel has been set to " + args[0])
         } catch (e) {
             throw e
         }

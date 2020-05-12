@@ -5,9 +5,11 @@ module.exports.message = async (message, mongodb) => {
     if(!fetch_guild) prefix = "y!"; else prefix = fetch_guild.prefix
     //check to see if the message author is a bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
-
+    let lis_chec = message.client.messagelistener.get(message.author.id);
+    console.log(lis_chec)
+    if (lis_chec) return message.reply("Hey! You are already executing the " + lis_chec.cmdname + " command! Please finish that before you try to do this.")
     //after slicing the prefix off the message, split it into an args string by each space
-    const args = message.content.slice(prefix.length).split(/ +/);
+    const args = message.content.slice(prefix.length).split(/ +/g);
 
     //remove and retrieve the first argument in args, which is the command name
     const commandName = args.shift().toLowerCase();
@@ -30,7 +32,7 @@ module.exports.message = async (message, mongodb) => {
     if (command.mentions) {
         if ((command.mentions.required_mentions !== -1 && message.mentions.users.size !== command.mentions.required_mentions) || (message.mentions.users.size < 1)) {
             if (message.mentions.users.size > 5) return message.reply("Too many mentions!");
-            let reply = "You gotta mention people for this command to work!"
+            let reply = "You either mentioned too many or haven't mentioned any people. You gotta mention the right amount of people for this command to work!"
             if (command.usage) {
                 reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
             }
